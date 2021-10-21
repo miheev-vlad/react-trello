@@ -44,7 +44,7 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(cards))
+    localStorage.setItem('cards', JSON.stringify(cards))
   }, [cards])
 
 
