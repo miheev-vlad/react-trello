@@ -1,6 +1,6 @@
 export enum StatusEnum {
-    TODO = 'TODO',
-    InProgress = 'InProgress',
-    Testing = 'Testing',
-    Done = 'Done'
+    ColumnOne = 'status1',
+    ColumnTwo = 'status2',
+    ColumnThree = 'status3',
+    ColumnFour = 'status4'
 }
