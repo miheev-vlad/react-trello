@@ -26,6 +26,7 @@ export const Column: React.FC<IColumn> = ({
         if (event.key === 'Enter') {
             onAdd!(ref.current!.value, status);
             ref.current!.value = ''
+            setIsAddBtnDisabled(true)
         }
     }
 
@@ -49,6 +50,7 @@ export const Column: React.FC<IColumn> = ({
         if (ref.current!.value.trim() !== '') {
             onAdd!(ref.current!.value, status);
             ref.current!.value = ''
+            setIsAddBtnDisabled(true)
         }
     }
 
