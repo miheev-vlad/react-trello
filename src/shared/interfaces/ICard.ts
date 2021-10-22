@@ -1,6 +1,10 @@
+import { StatusEnum } from "../StatusEnum";
+import { IComment } from "./IComment";
+
 export interface ICard {
+    author: string
     title: string
     id: number
-    comment: string
-    status: string
+    comments: IComment[]
+    status: StatusEnum
 }

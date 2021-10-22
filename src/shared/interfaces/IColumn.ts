@@ -1,9 +1,12 @@
+import { StatusEnum } from "../StatusEnum";
 import { ICard } from "./ICard";
 
 export interface IColumn {
     title: string
     id: number
-    cards: ICard[]
-    onRemove: (id: number) => void
-    onAdd: (title: string) => void
+    status: StatusEnum
+    cards?: ICard[]
+    onRemove?: (id: number) => void
+    onAdd?: (title: string, status: StatusEnum) => void
+    onEdit?: (id: number, title: string) => void
 }
