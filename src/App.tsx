@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Column } from './components/Сolumn/Column';
 import { ICard } from './shared/interfaces/ICard';
 import { IColumn } from './shared/interfaces/IColumn';
+import { IComment } from './shared/interfaces/IComment';
 import { StatusEnum } from './shared/StatusEnum';
 
 const AppWrapper = styled.div`
@@ -24,7 +25,8 @@ const App: React.FC = () => {
       id: Date.now(),
       comments: [],
       status: status,
-      author: localStorage.getItem('trelloUserName')!
+      author: localStorage.getItem('trelloUserName')!,
+      description: ''
     }
     setCards(prev => [newCard, ...prev])
   }
@@ -37,6 +39,46 @@ const App: React.FC = () => {
       return column
     })  
     setColumns(newColumnsArr)
+  }
+
+  const addCommentHandler = (id: number, comment: IComment) => {
+    const newCardsArr: ICard[] = cards.map(card => {
+      if (card.id === id) {
+        card.comments.unshift(comment)
+      }
+      return card
+    })  
+    setCards(newCardsArr)
+  }
+
+  const removeCommentHandler = (id: number, commentId: number) => {
+    const newCardsArr: ICard[] = cards.map(card => {
+      if (card.id === id) {
+        card.comments = card.comments.filter(comment => comment.id !== commentId)
+      }
+      return card
+    })  
+    setCards(newCardsArr)
+  }
+
+  const editCadTitleHandler = (id: number, title: string) => {
+    const newCardsArr: ICard[] = cards.map(card => {
+      if (card.id === id) {
+        card.title = title
+      }
+      return card
+    })  
+    setCards(newCardsArr)
+  }
+
+  const addDescriptionHandler = (id: number, description: string) => {
+    const newCardsArr: ICard[] = cards.map(card => {
+      if (card.id === id) {
+        card.description = description
+      }
+      return card
+    })  
+    setCards(newCardsArr)
   }
 
   useEffect(() => {
@@ -79,7 +121,19 @@ const App: React.FC = () => {
       </h2>
       {columns.map(column => {
         return (
-          <Column title={column.title} id={column.id} cards={cards} status={column.status} onRemove={removeHandler} onAdd={addHandler} onEdit={titleEditHandler} key={column.id} />
+          <Column
+            title={column.title}
+            id={column.id}
+            cards={cards}
+            status={column.status}
+            onRemove={removeHandler}
+            onAdd={addHandler}
+            onEdit={titleEditHandler}
+            onAddComment={addCommentHandler}
+            onRemoveComment={removeCommentHandler}
+            onAddDescription={addDescriptionHandler}
+            onEditCadTitle={editCadTitleHandler}
+            key={column.id} />
         )
       })}
     </AppWrapper>

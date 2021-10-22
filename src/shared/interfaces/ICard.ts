@@ -7,4 +7,5 @@ export interface ICard {
     id: number
     comments: IComment[]
     status: StatusEnum
+    description?: string
 }
