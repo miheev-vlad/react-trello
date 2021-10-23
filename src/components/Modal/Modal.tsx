@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ICard } from '../../shared/interfaces/ICard';
 import { IComment } from '../../shared/interfaces/IComment';
 import { Backdrop } from './components/Backdrop/Backdrop';
+import { Comment } from './components/Comment/Comment';
 import {
   CardInfo,
   CardTitle,
@@ -37,7 +38,6 @@ export const Modal: React.FC<ModalProps> = ({
   onEditComment,
 }) => {
   const refTextArea = useRef<HTMLTextAreaElement>(null)
-  const refInput = useRef<HTMLInputElement>(null)
   const [cardTitle, setCardTitle] = useState<string>(card!.title)
   const [commentText, setCommentText] = useState<string>('')
   const deleteCardHandler = () => {
@@ -77,10 +77,6 @@ export const Modal: React.FC<ModalProps> = ({
     onAddDescription(card!.id, refTextArea.current!.value)
   }
 
-  const editCommentTextHandler = (id: number) => {
-    onEditComment(card!.id, id, refInput.current!.value)
-  }
-
   useEffect(() => {
     document.addEventListener('keydown', escapeHandler, false);
     return () => {
@@ -114,7 +110,8 @@ export const Modal: React.FC<ModalProps> = ({
             <textarea
               ref={refTextArea}
               value={card!.description}
-              onChange={addCardDescriptionHandler}></textarea>
+              onChange={addCardDescriptionHandler}
+            ></textarea>
           </ModalSection>
           <ModalSection>
             <p>Comments:</p>
@@ -133,22 +130,13 @@ export const Modal: React.FC<ModalProps> = ({
             {!card!.comments.length && <p>No comments yet...</p>}
             {card!.comments.map((comment: IComment) => {
               return (
-                <div key={comment.id}>
-                  <p>
-                    {comment.author}
-                  </p>
-                  <input
-                    ref={refInput}
-                    type="text"
-                    id="commentText"
-                    value={comment.text}
-                    onChange={() => editCommentTextHandler(comment.id)}
-                  />
-                  <p>
-                    {comment.text}
-                  </p>
-                  <button type="button" onClick={() => onRemoveComment(card!.id, comment.id)}>x</button>
-                </div>
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  onEditComment={onEditComment!}
+                  onRemoveComment={onRemoveComment!}
+                  cardId={card!.id}
+                />
               );
             })}
           </ModalSection>
