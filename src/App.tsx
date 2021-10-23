@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { AppTitle, AppWrapper, Container } from './AppStyles';
 import { Column } from './components/Сolumn/Column';
 import { ICard } from './shared/interfaces/ICard';
 import { IColumn } from './shared/interfaces/IColumn';
 import { IComment } from './shared/interfaces/IComment';
 import { StatusEnum } from './shared/StatusEnum';
-
-const AppWrapper = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  padding: 2rem;
-  background: #fafafa;
-`
 
 const App: React.FC = () => {
   const [cards, setCards] = useState<ICard[]>([])
@@ -131,27 +124,31 @@ const App: React.FC = () => {
 
   return (
     <AppWrapper>
-      <h2>
-        React Trello App
-      </h2>
-      {columns.map(column => {
-        return (
-          <Column
-            title={column.title}
-            id={column.id}
-            cards={cards}
-            status={column.status}
-            onRemove={removeHandler}
-            onAdd={addHandler}
-            onEdit={titleEditHandler}
-            onAddComment={addCommentHandler}
-            onRemoveComment={removeCommentHandler}
-            onAddDescription={addDescriptionHandler}
-            onEditCadTitle={editCadTitleHandler}
-            onEditComment={editCommentHandler}
-            key={column.id} />
-        )
-      })}
+      <AppTitle>
+        <h2>
+          React Trello App
+        </h2>
+      </AppTitle>
+      <Container>
+        {columns.map(column => {
+          return (
+            <Column
+              title={column.title}
+              id={column.id}
+              cards={cards}
+              status={column.status}
+              onRemove={removeHandler}
+              onAdd={addHandler}
+              onEdit={titleEditHandler}
+              onAddComment={addCommentHandler}
+              onRemoveComment={removeCommentHandler}
+              onAddDescription={addDescriptionHandler}
+              onEditCadTitle={editCadTitleHandler}
+              onEditComment={editCommentHandler}
+              key={column.id} />
+          )
+        })}
+      </Container>
     </AppWrapper>
   );
 }

@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { ICard } from '../../shared/interfaces/ICard';
 import { IColumn } from '../../shared/interfaces/IColumn';
+import { Card } from '../Card/Card';
 import { Modal } from '../Modal/Modal';
+import { CardAddButton, CardTitleInput, ColumnCardContainer, ColumnContainer, TitleInput } from './styles';
 
 export const Column: React.FC<IColumn> = ({
     title,
@@ -66,8 +68,8 @@ export const Column: React.FC<IColumn> = ({
 
     return (
         <React.Fragment>
-            <ul>
-                <input
+            <ColumnContainer>
+                <TitleInput
                     onChange={changeHandler}
                     value={columnTitle}
                     type="text"
@@ -75,9 +77,8 @@ export const Column: React.FC<IColumn> = ({
                     placeholder="Enter Todo Name"
                     onKeyUpCapture={keyUpHandler}
                 />
-                Title: {title}
-                Id: {id}
-                <input
+                <br />
+                <CardTitleInput
                     ref={ref}
                     type="text"
                     id="title"
@@ -85,23 +86,26 @@ export const Column: React.FC<IColumn> = ({
                     onKeyPress={keyPressHandler}
                     onChange={disabledBtnHandler}
                 />
-                <button type="button" onClick={clickHandler} disabled={isAddBtnDisabled}>Add Card</button>
-                <label htmlFor="title">
-                    Enter Card Title
-                </label>
-                {cards!.filter(card => card.status === status).map(card => {
-                    return (
-                        <li key={card.id}>
-                            <label onClick={() => showModalHandler(card)}>
-                                <span>{card.title}</span>
-                                <span>{card.id}</span>
-                                <span>comments: {card.comments.length}</span>
-                            </label>
-                            <i onClick={() => onRemove!(card.id)}>x</i>
-                        </li>
-                    )
-                })}
-            </ul>
+                <CardAddButton
+                    type="button"
+                    onClick={clickHandler}
+                    disabled={isAddBtnDisabled}
+                >
+                    Add Card
+                </CardAddButton>
+                <ColumnCardContainer>
+                    {cards!.filter(card => card.status === status).map(card => {
+                        return (
+                            <Card
+                                key={card.id}
+                                card={card}
+                                onRemove={onRemove!}
+                                showModalHandler={showModalHandler}
+                            />
+                        )
+                    })}
+                </ColumnCardContainer>
+            </ColumnContainer>
             {showModal && (
                             <Modal
                                 columnTitle={columnTitle}
