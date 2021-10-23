@@ -1,4 +1,4 @@
-import { StatusEnum } from "../StatusEnum";
+import { StatusEnum } from "../enums/StatusEnum";
 import { IComment } from "./IComment";
 
 export interface ICard {

@@ -11,22 +11,20 @@ export const CardLayout = styled.div`
     background: #f8f8ff;
 
     &:hover {
-        box-shadow: 4px 2px 2px grey;
-    }
-`;
-
-export const CardInfo = styled.div`
-    width: 90%;
-    cursor: pointer;
-
-    &:hover {
+        box-shadow: 5px 3px 3px grey;
         font-weight: 500;
     }
 `;
 
+export const CardInfo = styled.div`
+    width: 85%;
+    cursor: pointer;
+`;
+
 export const DeleteBtn = styled.div`
-    width: 10%;
-    padding: 5px;
+    width: 15%;
+    text-align: center;
+    padding-top: 10px;
     cursor: pointer;
     color: #fff;
     background: #fcc7c3;

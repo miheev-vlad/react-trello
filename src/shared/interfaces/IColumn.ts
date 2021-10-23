@@ -1,4 +1,4 @@
-import { StatusEnum } from "../StatusEnum";
+import { StatusEnum } from "../enums/StatusEnum";
 import { ICard } from "./ICard";
 import { IComment } from "./IComment";
 
