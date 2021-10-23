@@ -15,16 +15,16 @@ import {
 } from './styles';
 
 type ModalProps = {
-  columnTitle: string
-  card?: ICard
-  onClose(): void
-  onRemove(id: number): void
-  onAddComment(id: number, comment: IComment): void
-  onRemoveComment(id: number, commentId: number): void
-  onAddDescription(id: number, description: string): void
-  onEditCadTitle(id: number, title: string): void
-  onEditComment(id: number, commentId: number, text: string): void
-}
+  columnTitle: string;
+  card?: ICard;
+  onClose(): void;
+  onRemove(id: number): void;
+  onAddComment(id: number, comment: IComment): void;
+  onRemoveComment(id: number, commentId: number): void;
+  onAddDescription(id: number, description: string): void;
+  onEditCadTitle(id: number, title: string): void;
+  onEditComment(id: number, commentId: number, text: string): void;
+};
 
 export const Modal: React.FC<ModalProps> = ({
   columnTitle,
@@ -37,45 +37,50 @@ export const Modal: React.FC<ModalProps> = ({
   onEditCadTitle,
   onEditComment,
 }) => {
-  const refTextArea = useRef<HTMLTextAreaElement>(null)
-  const [cardTitle, setCardTitle] = useState<string>(card!.title)
-  const [commentText, setCommentText] = useState<string>('')
+  const refTextArea = useRef<HTMLTextAreaElement>(null);
+  const [cardTitle, setCardTitle] = useState<string>(card!.title);
+  const [commentText, setCommentText] = useState<string>('');
   const deleteCardHandler = () => {
-    onRemove(card!.id)
-    onClose()
-  }
-  const escapeHandler = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Escape') onClose();
-  }, [onClose]);
+    onRemove(card!.id);
+    onClose();
+  };
+  const escapeHandler = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    },
+    [onClose],
+  );
 
-  const setCommentTextHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentText(event.target.value)
-  }
+  const setCommentTextHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setCommentText(event.target.value);
+  };
 
   const addCommentHandler = () => {
     if (commentText.trim() === '') {
-      return
+      return;
     }
     const newComment: IComment = {
       author: localStorage.getItem('trelloUserName')!,
       text: commentText,
-      id: Date.now()
-    }
-    onAddComment(card!.id, newComment)
-    setCommentText('')
-  }
+      id: Date.now(),
+    };
+    onAddComment(card!.id, newComment);
+    setCommentText('');
+  };
 
   const editCardTitleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCardTitle(event.target.value)
-  }
+    setCardTitle(event.target.value);
+  };
 
-  const keyUpHandler = (event: React.KeyboardEvent) => {
-    onEditCadTitle!(card!.id, cardTitle)
-  }
+  const keyUpHandler = () => {
+    onEditCadTitle!(card!.id, cardTitle);
+  };
 
   const addCardDescriptionHandler = () => {
-    onAddDescription(card!.id, refTextArea.current!.value)
-  }
+    onAddDescription(card!.id, refTextArea.current!.value);
+  };
 
   useEffect(() => {
     document.addEventListener('keydown', escapeHandler, false);
@@ -110,8 +115,7 @@ export const Modal: React.FC<ModalProps> = ({
             <textarea
               ref={refTextArea}
               value={card!.description}
-              onChange={addCardDescriptionHandler}
-            ></textarea>
+              onChange={addCardDescriptionHandler}></textarea>
           </ModalSection>
           <ModalSection>
             <p>Comments:</p>
@@ -122,7 +126,9 @@ export const Modal: React.FC<ModalProps> = ({
               value={commentText}
               onChange={setCommentTextHandler}
             />
-            <CommentAddButton onClick={addCommentHandler} disabled={!commentText}>
+            <CommentAddButton
+              onClick={addCommentHandler}
+              disabled={!commentText}>
               Add Comment
             </CommentAddButton>
           </ModalSection>

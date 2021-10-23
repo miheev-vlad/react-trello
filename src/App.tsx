@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [columns, setColumns] = useState<IColumn[]>([]);
 
   const removeHandler = (id: number) => {
-      setCards(prev => prev.filter(card => card.id !== id));
+    setCards((prev) => prev.filter((card) => card.id !== id));
   };
 
   const addHandler = (title: string, status: StatusEnum) => {
@@ -23,72 +23,74 @@ const App: React.FC = () => {
       status: status,
       author: LocalStorageService.getUserName(),
       description: '',
-    }
-    setCards(prev => [newCard, ...prev]);
+    };
+    setCards((prev) => [newCard, ...prev]);
   };
 
   const titleEditHandler = (id: number, title: string) => {
-    const newColumnsArr: IColumn[] = columns.map(column => {
+    const newColumnsArr: IColumn[] = columns.map((column) => {
       if (column.id === id) {
         column.title = title;
       }
       return column;
-    })  
+    });
     setColumns(newColumnsArr);
   };
 
   const addCommentHandler = (id: number, comment: IComment) => {
-    const newCardsArr: ICard[] = cards.map(card => {
+    const newCardsArr: ICard[] = cards.map((card) => {
       if (card.id === id) {
         card.comments.unshift(comment);
       }
       return card;
-    })  
+    });
     setCards(newCardsArr);
   };
 
   const editCommentHandler = (id: number, commentId: number, text: string) => {
-    const newCardsArr: ICard[] = cards.map(card => {
+    const newCardsArr: ICard[] = cards.map((card) => {
       if (card.id === id) {
-        card.comments.map(comment => {
+        card.comments.map((comment) => {
           if (comment.id === commentId) {
             comment.text = text;
           }
           return comment;
-        })
+        });
       }
       return card;
-    })  
+    });
     setCards(newCardsArr);
   };
 
   const removeCommentHandler = (id: number, commentId: number) => {
-    const newCardsArr: ICard[] = cards.map(card => {
+    const newCardsArr: ICard[] = cards.map((card) => {
       if (card.id === id) {
-        card.comments = card.comments.filter(comment => comment.id !== commentId);
+        card.comments = card.comments.filter(
+          (comment) => comment.id !== commentId,
+        );
       }
       return card;
-    })  
+    });
     setCards(newCardsArr);
   };
 
   const editCadTitleHandler = (id: number, title: string) => {
-    const newCardsArr: ICard[] = cards.map(card => {
+    const newCardsArr: ICard[] = cards.map((card) => {
       if (card.id === id) {
         card.title = title;
       }
       return card;
-    })  
+    });
     setCards(newCardsArr);
   };
 
   const addDescriptionHandler = (id: number, description: string) => {
-    const newCardsArr: ICard[] = cards.map(card => {
+    const newCardsArr: ICard[] = cards.map((card) => {
       if (card.id === id) {
         card.description = description;
       }
       return card;
-    })  
+    });
     setCards(newCardsArr);
   };
 
@@ -124,12 +126,10 @@ const App: React.FC = () => {
   return (
     <AppWrapper>
       <AppTitle>
-        <h2>
-          React Trello App
-        </h2>
+        <h2>React Trello App</h2>
       </AppTitle>
       <Container>
-        {columns.map(column => {
+        {columns.map((column) => {
           return (
             <Column
               title={column.title}
@@ -144,12 +144,13 @@ const App: React.FC = () => {
               onAddDescription={addDescriptionHandler}
               onEditCadTitle={editCadTitleHandler}
               onEditComment={editCommentHandler}
-              key={column.id} />
-          )
+              key={column.id}
+            />
+          );
         })}
       </Container>
     </AppWrapper>
   );
-}
+};
 
 export default App;
