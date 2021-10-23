@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ICard } from '../../shared/interfaces/ICard';
 import { IComment } from '../../shared/interfaces/IComment';
-import { Backdrop } from './Backdrop/Backdrop';
+import { Backdrop } from './components/Backdrop/Backdrop';
+import { Comment } from './components/Comment/Comment';
 import {
   CardInfo,
   CardTitle,
@@ -22,6 +23,7 @@ type ModalProps = {
   onRemoveComment(id: number, commentId: number): void
   onAddDescription(id: number, description: string): void
   onEditCadTitle(id: number, title: string): void
+  onEditComment(id: number, commentId: number, text: string): void
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -32,9 +34,10 @@ export const Modal: React.FC<ModalProps> = ({
   onAddComment,
   onRemoveComment,
   onAddDescription,
-  onEditCadTitle
+  onEditCadTitle,
+  onEditComment,
 }) => {
-  const ref = useRef<HTMLTextAreaElement>(null)
+  const refTextArea = useRef<HTMLTextAreaElement>(null)
   const [cardTitle, setCardTitle] = useState<string>(card!.title)
   const [commentText, setCommentText] = useState<string>('')
   const deleteCardHandler = () => {
@@ -50,6 +53,9 @@ export const Modal: React.FC<ModalProps> = ({
   }
 
   const addCommentHandler = () => {
+    if (commentText.trim() === '') {
+      return
+    }
     const newComment: IComment = {
       author: localStorage.getItem('trelloUserName')!,
       text: commentText,
@@ -68,7 +74,7 @@ export const Modal: React.FC<ModalProps> = ({
   }
 
   const addCardDescriptionHandler = () => {
-    onAddDescription(card!.id, ref.current!.value)
+    onAddDescription(card!.id, refTextArea.current!.value)
   }
 
   useEffect(() => {
@@ -102,9 +108,10 @@ export const Modal: React.FC<ModalProps> = ({
           <ModalSection>
             <p>Description:</p>
             <textarea
-              ref={ref}
+              ref={refTextArea}
               value={card!.description}
-              onChange={addCardDescriptionHandler}></textarea>
+              onChange={addCardDescriptionHandler}
+            ></textarea>
           </ModalSection>
           <ModalSection>
             <p>Comments:</p>
@@ -123,15 +130,13 @@ export const Modal: React.FC<ModalProps> = ({
             {!card!.comments.length && <p>No comments yet...</p>}
             {card!.comments.map((comment: IComment) => {
               return (
-                <div key={comment.id}>
-                  <p>
-                    {comment.author}
-                  </p>
-                  <p>
-                    {comment.text}
-                  </p>
-                  <button type="button" onClick={() => onRemoveComment(card!.id, comment.id)}>x</button>
-                </div>
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  onEditComment={onEditComment!}
+                  onRemoveComment={onRemoveComment!}
+                  cardId={card!.id}
+                />
               );
             })}
           </ModalSection>

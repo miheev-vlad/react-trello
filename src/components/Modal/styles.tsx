@@ -61,11 +61,13 @@ export const CardInfo = styled.section`
     padding: 5px;
     cursor: pointer;
     color: #fff;
-    background: #fcc7c3;
+    background: #f66257;
     border: 0;
     border-radius: 5px;
+    opacity: 0.7;
+
     &:hover {
-      background: #f66257;
+      opacity: 1;
     }
   }
 `;
