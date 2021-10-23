@@ -14,4 +14,5 @@ export interface IColumn {
     onRemoveComment?: (id: number, commentId: number) => void
     onAddDescription?: (id: number, description: string) => void
     onEditCadTitle?: (id: number, title: string) => void
+    onEditComment?: (id: number, commentId: number, text: string) => void
 }

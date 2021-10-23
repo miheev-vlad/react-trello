@@ -51,6 +51,21 @@ const App: React.FC = () => {
     setCards(newCardsArr)
   }
 
+  const editCommentHandler = (id: number, commentId: number, text: string) => {
+    const newCardsArr: ICard[] = cards.map(card => {
+      if (card.id === id) {
+        card.comments.map(comment => {
+          if (comment.id === commentId) {
+            comment.text = text
+          }
+          return comment;
+        })
+      }
+      return card
+    })  
+    setCards(newCardsArr)
+  }
+
   const removeCommentHandler = (id: number, commentId: number) => {
     const newCardsArr: ICard[] = cards.map(card => {
       if (card.id === id) {
@@ -133,6 +148,7 @@ const App: React.FC = () => {
             onRemoveComment={removeCommentHandler}
             onAddDescription={addDescriptionHandler}
             onEditCadTitle={editCadTitleHandler}
+            onEditComment={editCommentHandler}
             key={column.id} />
         )
       })}

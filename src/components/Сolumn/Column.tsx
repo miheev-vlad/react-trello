@@ -15,6 +15,7 @@ export const Column: React.FC<IColumn> = ({
     onRemoveComment,
     onAddDescription,
     onEditCadTitle,
+    onEditComment,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false)
     const [card, setCard] = useState<ICard>()
@@ -111,6 +112,7 @@ export const Column: React.FC<IColumn> = ({
                                 onRemoveComment={onRemoveComment!}
                                 onAddDescription={onAddDescription!}
                                 onEditCadTitle={onEditCadTitle!}
+                                onEditComment={onEditComment!}
                             />
                           )}
         </React.Fragment>
