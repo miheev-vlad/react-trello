@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ICard } from '../../shared/interfaces/ICard';
-import { IComment } from '../../shared/interfaces/IComment';
+import { ICard } from '../../../shared/interfaces/ICard';
+import { IComment } from '../../../shared/interfaces/IComment';
 import { Backdrop } from './components/Backdrop/Backdrop';
 import { Comment } from './components/Comment/Comment';
 import {

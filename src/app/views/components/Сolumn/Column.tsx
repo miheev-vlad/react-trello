@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { ICard } from '../../shared/interfaces/ICard';
-import { IColumn } from '../../shared/interfaces/IColumn';
+import { ICard } from '../../../shared/interfaces/ICard';
+import { IColumn } from '../../../shared/interfaces/IColumn';
 import { Card } from '../Card/Card';
 import { Modal } from '../Modal/Modal';
 import {

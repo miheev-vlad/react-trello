@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { StatusEnum } from '../../shared/enums/StatusEnum';
+import { ICard } from '../../shared/interfaces/ICard';
+import { IColumn } from '../../shared/interfaces/IColumn';
+import { IComment } from '../../shared/interfaces/IComment';
+import { LocalStorageService } from '../../shared/services/LocalStorageServise';
+import { Column } from '../components/Сolumn/Column';
 import { AppTitle, AppWrapper, Container } from './AppStyles';
-import { Column } from './components/Сolumn/Column';
-import { ICard } from './shared/interfaces/ICard';
-import { IColumn } from './shared/interfaces/IColumn';
-import { IComment } from './shared/interfaces/IComment';
-import { StatusEnum } from './shared/enums/StatusEnum';
-import { LocalStorageService } from './shared/services/LocalStorageServise';
 
 const App: React.FC = () => {
   const [cards, setCards] = useState<ICard[]>([]);

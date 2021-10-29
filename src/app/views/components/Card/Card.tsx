@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICard } from '../../shared/interfaces/ICard';
+import { ICard } from '../../../shared/interfaces/ICard';
 import { CardInfo, CardLayout, DeleteBtn } from './styles';
 
 type CardProps = {

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { IComment } from '../../../../shared/interfaces/IComment';
+import { IComment } from '../../../../../shared/interfaces/IComment';
 import {
   CommentAuthor,
   CommentHeader,
