@@ -4,6 +4,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalStyle } from 'styled-components';
 import { App } from './app/views/layouts';
+import { Provider } from 'react-redux';
+import { store } from './app/state/store';
 
 const Global = createGlobalStyle`
   * {
@@ -15,8 +17,10 @@ const Global = createGlobalStyle`
 
 ReactDOM.render(
   <React.StrictMode>
-    <Global />
-    <App />
+    <Provider store={store}>
+      <Global />
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
