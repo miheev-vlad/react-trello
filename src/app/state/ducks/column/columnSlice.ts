@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StatusEnum } from '../../../shared/enums/StatusEnum';
 import { IColumn } from '../../../shared/interfaces/IColumn';
 
-interface IColumnsState {
+export interface IColumnsState {
   value: IColumn[];
 }
 
@@ -11,7 +12,28 @@ interface EditColumnPayload {
 }
 
 const initialState: IColumnsState = {
-  value: [],
+  value: [
+    {
+      title: 'TODO',
+      id: 1,
+      status: StatusEnum.ColumnOne,
+    },
+    {
+      title: 'In Progress',
+      id: 2,
+      status: StatusEnum.ColumnTwo,
+    },
+    {
+      title: 'Testing',
+      id: 3,
+      status: StatusEnum.ColumnThree,
+    },
+    {
+      title: 'Done',
+      id: 4,
+      status: StatusEnum.ColumnFour,
+    },
+  ],
 };
 
 export const columnSlice = createSlice({

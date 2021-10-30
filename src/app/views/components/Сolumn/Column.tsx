@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { ICard } from '../../../shared/interfaces/ICard';
 import { IColumn } from '../../../shared/interfaces/IColumn';
+import { editColumn } from '../../../state/ducks/column/columnSlice';
 import { Card } from '../Card/Card';
 import { Modal } from '../Modal/Modal';
 import {
@@ -11,80 +13,81 @@ import {
   TitleInput,
 } from './styles';
 
-export const Column: React.FC<IColumn> = ({
-  title,
-  id,
-  cards,
-  status,
-  onRemove,
-  onAdd,
-  onEdit,
-  onAddComment,
-  onRemoveComment,
-  onAddDescription,
-  onEditCadTitle,
-  onEditComment,
-}) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [card, setCard] = useState<ICard>();
-  const [columnTitle, setColumnTitle] = useState<string>(title);
-  const [isAddBtnDisabled, setIsAddBtnDisabled] = useState<boolean>(true);
-  const ref = useRef<HTMLInputElement>(null);
+type ColumnProps = {
+  column: IColumn;
+};
 
-  const keyPressHandler = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      onAdd!(ref.current!.value, status);
-      ref.current!.value = '';
-      setIsAddBtnDisabled(true);
-    }
+export const Column: React.FC<ColumnProps> = ({ column }) => {
+  const [columnTitle, setColumnTitle] = useState<string>(column.title);
+  const dispatch = useDispatch();
+  const editColumnTitleHandler = () => {
+    dispatch(
+      editColumn({
+        id: column.id,
+        title: columnTitle,
+      }),
+    );
   };
+  // const [showModal, setShowModal] = useState<boolean>(false);
+  // const [card, setCard] = useState<ICard>();
+  // const [columnTitle, setColumnTitle] = useState<string>(title);
+  // const [isAddBtnDisabled, setIsAddBtnDisabled] = useState<boolean>(true);
+  // const ref = useRef<HTMLInputElement>(null);
 
-  const disabledBtnHandler = () => {
-    if (ref.current!.value.trim() !== '') {
-      setIsAddBtnDisabled(false);
-    } else {
-      setIsAddBtnDisabled(true);
-    }
-  };
+  // const keyPressHandler = (event: React.KeyboardEvent) => {
+  //   if (event.key === 'Enter') {
+  //     onAdd!(ref.current!.value, status);
+  //     ref.current!.value = '';
+  //     setIsAddBtnDisabled(true);
+  //   }
+  // };
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setColumnTitle(event.target.value);
-  };
+  // const disabledBtnHandler = () => {
+  //   if (ref.current!.value.trim() !== '') {
+  //     setIsAddBtnDisabled(false);
+  //   } else {
+  //     setIsAddBtnDisabled(true);
+  //   }
+  // };
 
-  const keyUpHandler = () => {
-    onEdit!(id, columnTitle);
-  };
+  // const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setColumnTitle(event.target.value);
+  // };
 
-  const clickHandler = () => {
-    if (ref.current!.value.trim() !== '') {
-      onAdd!(ref.current!.value, status);
-      ref.current!.value = '';
-      setIsAddBtnDisabled(true);
-    }
-  };
+  // const keyUpHandler = () => {
+  //   onEdit!(id, columnTitle);
+  // };
 
-  const closeModalHandler = () => {
-    setShowModal(false);
-  };
+  // const clickHandler = () => {
+  //   if (ref.current!.value.trim() !== '') {
+  //     onAdd!(ref.current!.value, status);
+  //     ref.current!.value = '';
+  //     setIsAddBtnDisabled(true);
+  //   }
+  // };
 
-  const showModalHandler = (card: ICard) => {
-    setShowModal(true);
-    setCard(card);
-  };
+  // const closeModalHandler = () => {
+  //   setShowModal(false);
+  // };
+
+  // const showModalHandler = (card: ICard) => {
+  //   setShowModal(true);
+  //   setCard(card);
+  // };
 
   return (
     <React.Fragment>
       <ColumnContainer>
         <TitleInput
-          onChange={changeHandler}
+          onChange={(e) => setColumnTitle(e.target.value)}
           value={columnTitle}
           type="text"
           id="title"
           placeholder="Enter Todo Name"
-          onKeyUpCapture={keyUpHandler}
+          onKeyUpCapture={editColumnTitleHandler}
         />
         <br />
-        <CardTitleInput
+        {/* <CardTitleInput
           ref={ref}
           type="text"
           id="title"
@@ -97,8 +100,8 @@ export const Column: React.FC<IColumn> = ({
           onClick={clickHandler}
           disabled={isAddBtnDisabled}>
           Add Card
-        </CardAddButton>
-        <ColumnCardContainer>
+        </CardAddButton> */}
+        {/* <ColumnCardContainer>
           {cards!
             .filter((card) => card.status === status)
             .map((card) => {
@@ -111,9 +114,9 @@ export const Column: React.FC<IColumn> = ({
                 />
               );
             })}
-        </ColumnCardContainer>
+        </ColumnCardContainer> */}
       </ColumnContainer>
-      {showModal && (
+      {/* {showModal && (
         <Modal
           columnTitle={columnTitle}
           onClose={closeModalHandler}
@@ -125,7 +128,7 @@ export const Column: React.FC<IColumn> = ({
           onEditCadTitle={onEditCadTitle!}
           onEditComment={onEditComment!}
         />
-      )}
+      )} */}
     </React.Fragment>
   );
 };
