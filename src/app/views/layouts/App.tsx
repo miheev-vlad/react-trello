@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { StatusEnum } from '../../shared/enums/StatusEnum';
 import { ICard } from '../../shared/interfaces/ICard';
 import { IColumn } from '../../shared/interfaces/IColumn';
 import { IComment } from '../../shared/interfaces/IComment';
 import { LocalStorageService } from '../../shared/services/LocalStorageServise';
-import { RootState } from '../../state/store';
+import { IAppState, RootState } from '../../state/store';
 import { Column } from '../components/Сolumn/Column';
 import { AppTitle, AppWrapper, Container } from './AppStyles';
 

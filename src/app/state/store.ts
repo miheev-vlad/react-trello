@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import columnsReducers from './ducks/column/index';
 import {
   persistStore,
   persistReducer,
@@ -12,7 +11,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
+import columnsReducers from './ducks/column/index';
+import cardsReducers from './ducks/card/index';
 import { IColumnsState } from './ducks/column/columnSlice';
+import { ICardsState } from './ducks/card/cardSlice';
 
 const persistConfig = {
   key: 'root',
@@ -22,10 +25,12 @@ const persistConfig = {
 
 export interface IAppState {
   columns: IColumnsState;
+  cards: ICardsState;
 }
 
 const rootReducer = combineReducers<IAppState>({
   columns: columnsReducers,
+  cards: cardsReducers,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

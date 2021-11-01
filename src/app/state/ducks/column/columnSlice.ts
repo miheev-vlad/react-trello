@@ -37,7 +37,7 @@ const initialState: IColumnsState = {
 };
 
 export const columnSlice = createSlice({
-  name: 'reservations',
+  name: 'columns',
   initialState,
   reducers: {
     editColumn: (state, action: PayloadAction<EditColumnPayload>) => {

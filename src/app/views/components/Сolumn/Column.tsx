@@ -1,8 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect, useSelector } from 'react-redux';
+import { StatusEnum } from '../../../shared/enums/StatusEnum';
 import { ICard } from '../../../shared/interfaces/ICard';
 import { IColumn } from '../../../shared/interfaces/IColumn';
+import { columnCardsSelector } from '../../../state/ducks/card';
+import { addCard } from '../../../state/ducks/card/cardSlice';
 import { editColumn } from '../../../state/ducks/column/columnSlice';
+import { IAppState } from '../../../state/store';
 import { Card } from '../Card/Card';
 import { Modal } from '../Modal/Modal';
 import {
@@ -12,12 +16,15 @@ import {
   ColumnContainer,
   TitleInput,
 } from './styles';
+import { v4 as uuid } from 'uuid';
 
-type ColumnProps = {
+interface OwnProps {
   column: IColumn;
-};
+}
 
-export const Column: React.FC<ColumnProps> = ({ column }) => {
+type Props = OwnProps;
+
+export const Column: React.FC<Props> = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState<string>(column.title);
   const dispatch = useDispatch();
   const editColumnTitleHandler = () => {
@@ -28,11 +35,16 @@ export const Column: React.FC<ColumnProps> = ({ column }) => {
       }),
     );
   };
+
+  const cards = useSelector(columnCardsSelector(column.status));
+
   // const [showModal, setShowModal] = useState<boolean>(false);
   // const [card, setCard] = useState<ICard>();
   // const [columnTitle, setColumnTitle] = useState<string>(title);
   // const [isAddBtnDisabled, setIsAddBtnDisabled] = useState<boolean>(true);
-  // const ref = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLInputElement>(null);
+
+  const [cardTitle, setCardTitle] = useState<string>('');
 
   // const keyPressHandler = (event: React.KeyboardEvent) => {
   //   if (event.key === 'Enter') {
@@ -87,20 +99,36 @@ export const Column: React.FC<ColumnProps> = ({ column }) => {
           onKeyUpCapture={editColumnTitleHandler}
         />
         <br />
-        {/* <CardTitleInput
+        {cards.map((card, index) => {
+          return <p key={index}>{card.title}</p>;
+        })}
+        <CardTitleInput
           ref={ref}
           type="text"
           id="title"
           placeholder="Enter Card Title"
-          onKeyPress={keyPressHandler}
-          onChange={disabledBtnHandler}
+          value={cardTitle}
+          // onKeyPress={keyPressHandler}
+          onChange={(e) => setCardTitle(e.target.value)}
         />
         <CardAddButton
           type="button"
-          onClick={clickHandler}
-          disabled={isAddBtnDisabled}>
+          onClick={() => {
+            dispatch(
+              addCard({
+                title: cardTitle,
+                id: parseInt(uuid()),
+                status: column.status,
+                author: 'action.payload.author',
+                comments: [],
+              }),
+            );
+            setCardTitle('');
+          }}
+          // disabled={isAddBtnDisabled}
+        >
           Add Card
-        </CardAddButton> */}
+        </CardAddButton>
         {/* <ColumnCardContainer>
           {cards!
             .filter((card) => card.status === status)
