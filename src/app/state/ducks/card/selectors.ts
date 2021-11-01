@@ -8,7 +8,7 @@ const colunmsCards = (state: IAppState) => state.cards.value;
 
 function filterColumnCardsByStatus(status: StatusEnum) {
   return createSelector(colunmsCards, (cards: ICard[]) => {
-    return cards.filter((card) => card.status === status);
+    return _.filter(cards, ['status', status]);
   });
 }
 
