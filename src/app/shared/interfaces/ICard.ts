@@ -4,7 +4,7 @@ import { IComment } from './IComment';
 export interface ICard {
   author: string;
   title: string;
-  id: number;
+  id: string;
   comments: IComment[];
   status: StatusEnum;
   description?: string;

@@ -2,50 +2,26 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { StatusEnum } from '../../../shared/enums/StatusEnum';
 import { ICard } from '../../../shared/interfaces/ICard';
 import { IComment } from '../../../shared/interfaces/IComment';
+import _ from 'lodash';
 
 export interface ICardsState {
   value: ICard[];
 }
 
-interface AddCardPayload {
-  id: number;
+export interface AddCardPayload {
+  id: string;
   title: string;
   status: StatusEnum;
   author: string;
   comments: IComment[];
 }
 
+export interface RemoveCardPayload {
+  id: string;
+}
+
 const initialState: ICardsState = {
-  value: [
-    {
-      title: 'card 1',
-      id: 1,
-      status: StatusEnum.ColumnOne,
-      author: 'author',
-      comments: [],
-    },
-    {
-      title: 'card 2',
-      id: 2,
-      status: StatusEnum.ColumnTwo,
-      author: 'author',
-      comments: [],
-    },
-    {
-      title: 'card 3',
-      id: 3,
-      status: StatusEnum.ColumnThree,
-      author: 'author',
-      comments: [],
-    },
-    {
-      title: 'card 4',
-      id: 4,
-      status: StatusEnum.ColumnFour,
-      author: 'author',
-      comments: [],
-    },
-  ],
+  value: [],
 };
 
 export const cardSlice = createSlice({
@@ -61,9 +37,12 @@ export const cardSlice = createSlice({
         comments: action.payload.comments,
       });
     },
+    removeCard: (state, action: PayloadAction<RemoveCardPayload>) => {
+      state.value = state.value.filter((card) => card.id !== action.payload.id);
+    },
   },
 });
 
-export const { addCard } = cardSlice.actions;
+export const { addCard, removeCard } = cardSlice.actions;
 
 export default cardSlice.reducer;

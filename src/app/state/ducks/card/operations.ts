@@ -1,3 +1,3 @@
-import { addCard } from './cardSlice';
+import { addCard, removeCard } from './cardSlice';
 
-export { addCard };
+export { addCard, removeCard };

@@ -4,7 +4,7 @@ import { StatusEnum } from '../../../shared/enums/StatusEnum';
 import { ICard } from '../../../shared/interfaces/ICard';
 import { IColumn } from '../../../shared/interfaces/IColumn';
 import { columnCardsSelector } from '../../../state/ducks/card';
-import { addCard } from '../../../state/ducks/card/cardSlice';
+import { addCard, AddCardPayload } from '../../../state/ducks/card/cardSlice';
 import { editColumn } from '../../../state/ducks/column/columnSlice';
 import { IAppState } from '../../../state/store';
 import { Card } from '../Card/Card';
@@ -17,6 +17,7 @@ import {
   TitleInput,
 } from './styles';
 import { v4 as uuid } from 'uuid';
+import { CreateForm } from '../CreateForm/CreateForm';
 
 interface OwnProps {
   column: IColumn;
@@ -45,6 +46,18 @@ export const Column: React.FC<Props> = ({ column }) => {
   const ref = useRef<HTMLInputElement>(null);
 
   const [cardTitle, setCardTitle] = useState<string>('');
+
+  const createCardHandler = (title: string) => {
+    dispatch(
+      addCard({
+        title,
+        id: uuid(),
+        status: column.status,
+        author: 'action.payload.author',
+        comments: [],
+      }),
+    );
+  };
 
   // const keyPressHandler = (event: React.KeyboardEvent) => {
   //   if (event.key === 'Enter') {
@@ -99,50 +112,17 @@ export const Column: React.FC<Props> = ({ column }) => {
           onKeyUpCapture={editColumnTitleHandler}
         />
         <br />
-        {cards.map((card, index) => {
-          return <p key={index}>{card.title}</p>;
-        })}
-        <CardTitleInput
-          ref={ref}
-          type="text"
-          id="title"
-          placeholder="Enter Card Title"
-          value={cardTitle}
-          // onKeyPress={keyPressHandler}
-          onChange={(e) => setCardTitle(e.target.value)}
+        <CreateForm
+          onSubmit={createCardHandler}
+          inputName={'title'}
+          placeholder={'Enter card title...'}
+          btnName={'Add card'}
         />
-        <CardAddButton
-          type="button"
-          onClick={() => {
-            dispatch(
-              addCard({
-                title: cardTitle,
-                id: parseInt(uuid()),
-                status: column.status,
-                author: 'action.payload.author',
-                comments: [],
-              }),
-            );
-            setCardTitle('');
-          }}
-          // disabled={isAddBtnDisabled}
-        >
-          Add Card
-        </CardAddButton>
-        {/* <ColumnCardContainer>
-          {cards!
-            .filter((card) => card.status === status)
-            .map((card) => {
-              return (
-                <Card
-                  key={card.id}
-                  card={card}
-                  onRemove={onRemove!}
-                  showModalHandler={showModalHandler}
-                />
-              );
-            })}
-        </ColumnCardContainer> */}
+        <ColumnCardContainer>
+          {cards.map((card) => {
+            return <Card key={card.id} card={card} />;
+          })}
+        </ColumnCardContainer>
       </ColumnContainer>
       {/* {showModal && (
         <Modal

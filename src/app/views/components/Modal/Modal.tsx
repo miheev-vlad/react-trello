@@ -18,12 +18,12 @@ type ModalProps = {
   columnTitle: string;
   card?: ICard;
   onClose(): void;
-  onRemove(id: number): void;
-  onAddComment(id: number, comment: IComment): void;
-  onRemoveComment(id: number, commentId: number): void;
-  onAddDescription(id: number, description: string): void;
-  onEditCadTitle(id: number, title: string): void;
-  onEditComment(id: number, commentId: number, text: string): void;
+  onRemove(id: string): void;
+  onAddComment(id: string, comment: IComment): void;
+  onRemoveComment(id: string, commentId: number): void;
+  onAddDescription(id: string, description: string): void;
+  onEditCadTitle(id: string, title: string): void;
+  onEditComment(id: string, commentId: number, text: string): void;
 };
 
 export const Modal: React.FC<ModalProps> = ({

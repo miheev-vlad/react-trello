@@ -9,10 +9,10 @@ import {
 } from './styles';
 
 type CommentProps = {
-  cardId: number;
+  cardId: string;
   comment: IComment;
-  onEditComment(cardId: number, commentId: number, text: string): void;
-  onRemoveComment(cardId: number, commentId: number): void;
+  onEditComment(cardId: string, commentId: number, text: string): void;
+  onRemoveComment(cardId: string, commentId: number): void;
 };
 
 export const Comment: React.FC<CommentProps> = ({
