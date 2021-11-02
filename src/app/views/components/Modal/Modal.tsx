@@ -29,6 +29,7 @@ export const Modal: React.FC = () => {
   const card = useSelector((state: IAppState) => state.modal.card);
   const refTextArea = useRef<HTMLTextAreaElement>(null);
   const [cardTitle, setCardTitle] = useState<string>(card ? card.title : '');
+  const userName = useSelector((state: IAppState) => state.user.userName);
 
   const columnTitle = useSelector(
     (state: IAppState) => state.modal.columnTitle,
@@ -60,7 +61,7 @@ export const Modal: React.FC = () => {
   const createCommentHandler = (comment: string) => {
     const newComment: IComment = {
       id: uuid(),
-      author: 'author',
+      author: userName,
       text: comment,
     };
     dispatch(

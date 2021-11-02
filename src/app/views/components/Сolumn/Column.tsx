@@ -8,6 +8,7 @@ import { Card } from '../Card/Card';
 import { ColumnCardContainer, ColumnContainer, TitleInput } from './styles';
 import { v4 as uuid } from 'uuid';
 import { CreateForm } from '../CreateForm/CreateForm';
+import { IAppState } from '../../../state/store';
 
 interface OwnProps {
   column: IColumn;
@@ -18,6 +19,7 @@ type Props = OwnProps;
 export const Column: React.FC<Props> = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState<string>(column.title);
   const cards = useSelector(columnCardsSelector(column.status));
+  const userName = useSelector((state: IAppState) => state.user.userName);
   const dispatch = useDispatch();
 
   const editColumnTitleHandler = () => {
@@ -35,7 +37,7 @@ export const Column: React.FC<Props> = ({ column }) => {
         title,
         id: uuid(),
         status: column.status,
-        author: 'action.payload.author',
+        author: userName,
         comments: [],
       }),
     );

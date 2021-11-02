@@ -7,6 +7,18 @@ type InputProps = {
   placeholder: string;
 };
 
+const required = (value: string) => {
+  if (!value) {
+    return true;
+  }
+
+  if (!value.trim()) {
+    return true;
+  }
+
+  return undefined;
+};
+
 export const InputField: React.FC<InputProps> = ({
   inputName,
   placeholder,
@@ -18,6 +30,7 @@ export const InputField: React.FC<InputProps> = ({
         component="input"
         type="text"
         placeholder={placeholder}
+        validate={required}
       />
     </InputContainer>
   );
