@@ -1,6 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
+import _ from 'lodash';
+
+import { Backdrop } from './components/Backdrop/Backdrop';
+import { Comment } from './components/Comment/Comment';
+import {
+  CardInfo,
+  CardTitle,
+  CloseButton,
+  ModalContainer,
+  ModalLayout,
+  ModalSection,
+} from './styles';
+import { CreateForm } from '../CreateForm/CreateForm';
 import { IComment } from '../../../shared/interfaces/IComment';
 import {
   addCardComment,
@@ -12,17 +25,6 @@ import {
 } from '../../../state/ducks/card/cardSlice';
 import { closeModal, toggleModal } from '../../../state/ducks/modal/modalSlice';
 import { IAppState } from '../../../state/store';
-import { CreateForm } from '../CreateForm/CreateForm';
-import { Backdrop } from './components/Backdrop/Backdrop';
-import { Comment } from './components/Comment/Comment';
-import {
-  CardInfo,
-  CardTitle,
-  CloseButton,
-  ModalContainer,
-  ModalLayout,
-  ModalSection,
-} from './styles';
 
 export const Modal: React.FC = () => {
   const dispatch = useDispatch();
@@ -166,7 +168,7 @@ export const Modal: React.FC = () => {
           </ModalSection>
           <ModalSection>
             {!cardComments.length && <p>No comments yet...</p>}
-            {cardComments.map((comment: IComment) => {
+            {_.map(cardComments, (comment: IComment) => {
               return (
                 <Comment
                   key={comment.id}
