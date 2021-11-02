@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../../state/ducks/user/userSlice';
-import { IAppState, RootState } from '../../state/store';
+import _ from 'lodash';
+
+import { AppTitle, AppWrapper, Container } from './AppStyles';
 import { Modal } from '../components/Modal/Modal';
 import { Column } from '../components/Сolumn/Column';
-import { AppTitle, AppWrapper, Container } from './AppStyles';
+import { createUser } from '../../state/ducks/user/userSlice';
+import { IAppState, RootState } from '../../state/store';
 
 const App: React.FC = () => {
   const columns = useSelector((state: RootState) => state.columns.value);
@@ -37,7 +39,7 @@ const App: React.FC = () => {
         <h2>React Trello App</h2>
       </AppTitle>
       <Container>
-        {columns.map((column) => {
+        {_.map(columns, (column) => {
           return <Column column={column} key={column.id} />;
         })}
       </Container>

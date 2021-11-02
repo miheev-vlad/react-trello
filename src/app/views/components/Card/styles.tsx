@@ -9,6 +9,7 @@ export const CardLayout = styled.div`
   margin-bottom: 15px;
   padding: 5px;
   background: #f8f8ff;
+  max-width: 250px;
 
   &:hover {
     box-shadow: 5px 3px 3px grey;
@@ -19,6 +20,7 @@ export const CardLayout = styled.div`
 export const CardInfo = styled.div`
   width: 85%;
   cursor: pointer;
+  word-wrap: break-word;
 `;
 
 export const DeleteBtn = styled.div`

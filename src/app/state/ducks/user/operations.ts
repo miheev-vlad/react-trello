@@ -1,3 +1,3 @@
-import { createUser, getUserName } from './userSlice';
+import { createUser } from './userSlice';
 
-export { createUser, getUserName };
+export { createUser };

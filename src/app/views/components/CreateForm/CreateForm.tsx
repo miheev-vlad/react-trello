@@ -23,12 +23,15 @@ export const CreateForm: React.FC<CreateCardFormProps> = ({
         onSubmit(Object.values(values));
         form.reset();
       }}
-      render={({ handleSubmit }) => {
+      render={({ handleSubmit, submitting, pristine, invalid }) => {
         return (
           <form id="exampleForm" onSubmit={handleSubmit}>
             <FormComponentsWrapp>
               <InputField inputName={inputName} placeholder={placeholder} />
-              <CreateButton btnName={btnName} />
+              <CreateButton
+                btnName={btnName}
+                disabled={submitting || pristine || invalid}
+              />
             </FormComponentsWrapp>
           </form>
         );
