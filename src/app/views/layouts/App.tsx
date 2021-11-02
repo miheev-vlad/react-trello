@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../../state/ducks/user/userSlice';
 import { IAppState, RootState } from '../../state/store';
