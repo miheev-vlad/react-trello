@@ -39,16 +39,6 @@ export const CardTitle = styled.input`
   letter-spacing: 1px;
 `;
 
-export const CommentInput = styled.input`
-  padding: 5px;
-  margin-right: 5px;
-`;
-
-export const CommentAddButton = styled.button`
-  padding: 5px;
-  cursor: pointer;
-`;
-
 export const ModalSection = styled.section`
   margin-bottom: 15px;
 `;

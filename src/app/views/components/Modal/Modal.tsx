@@ -1,85 +1,101 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ICard } from '../../../shared/interfaces/ICard';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import { IComment } from '../../../shared/interfaces/IComment';
+import {
+  addCardComment,
+  editCardComments,
+  editCardDescription,
+  editCardTitle,
+  removeCard,
+  removeCardComment,
+} from '../../../state/ducks/card/cardSlice';
+import { closeModal, toggleModal } from '../../../state/ducks/modal/modalSlice';
+import { IAppState } from '../../../state/store';
+import { CreateForm } from '../CreateForm/CreateForm';
 import { Backdrop } from './components/Backdrop/Backdrop';
 import { Comment } from './components/Comment/Comment';
 import {
   CardInfo,
   CardTitle,
   CloseButton,
-  CommentAddButton,
-  CommentInput,
   ModalContainer,
   ModalLayout,
   ModalSection,
 } from './styles';
 
-type ModalProps = {
-  columnTitle: string;
-  card?: ICard;
-  onClose(): void;
-  onRemove(id: number): void;
-  onAddComment(id: number, comment: IComment): void;
-  onRemoveComment(id: number, commentId: number): void;
-  onAddDescription(id: number, description: string): void;
-  onEditCadTitle(id: number, title: string): void;
-  onEditComment(id: number, commentId: number, text: string): void;
-};
-
-export const Modal: React.FC<ModalProps> = ({
-  columnTitle,
-  card,
-  onClose,
-  onRemove,
-  onAddComment,
-  onRemoveComment,
-  onAddDescription,
-  onEditCadTitle,
-  onEditComment,
-}) => {
+export const Modal: React.FC = () => {
+  const dispatch = useDispatch();
+  const card = useSelector((state: IAppState) => state.modal.card);
   const refTextArea = useRef<HTMLTextAreaElement>(null);
-  const [cardTitle, setCardTitle] = useState<string>(card!.title);
-  const [commentText, setCommentText] = useState<string>('');
-  const deleteCardHandler = () => {
-    onRemove(card!.id);
-    onClose();
-  };
-  const escapeHandler = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    },
-    [onClose],
+  const [cardTitle, setCardTitle] = useState<string>(card ? card.title : '');
+
+  const columnTitle = useSelector(
+    (state: IAppState) => state.modal.columnTitle,
   );
 
-  const setCommentTextHandler = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setCommentText(event.target.value);
-  };
+  const [cardComments, setCardComments] = useState<IComment[]>(
+    card ? card.comments : [],
+  );
 
-  const addCommentHandler = () => {
-    if (commentText.trim() === '') {
-      return;
-    }
-    const newComment: IComment = {
-      author: localStorage.getItem('trelloUserName')!,
-      text: commentText,
-      id: Date.now(),
-    };
-    onAddComment(card!.id, newComment);
-    setCommentText('');
-  };
-
-  const editCardTitleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCardTitle(event.target.value);
-  };
-
-  const keyUpHandler = () => {
-    onEditCadTitle!(card!.id, cardTitle);
-  };
+  const escapeHandler = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        dispatch(toggleModal({ isShow: false }));
+        dispatch(closeModal());
+      }
+    },
+    [dispatch],
+  );
 
   const addCardDescriptionHandler = () => {
-    onAddDescription(card!.id, refTextArea.current!.value);
+    dispatch(
+      editCardDescription({
+        id: card!.id,
+        description: refTextArea.current!.value,
+      }),
+    );
+  };
+
+  const createCommentHandler = (comment: string) => {
+    const newComment: IComment = {
+      id: uuid(),
+      author: 'author',
+      text: comment,
+    };
+    dispatch(
+      addCardComment({
+        id: card!.id,
+        comment: newComment,
+      }),
+    );
+    setCardComments((prevComments) => [newComment, ...prevComments]);
+  };
+
+  const removeCommentHandler = (cardId: string, commentId: string) => {
+    dispatch(
+      removeCardComment({
+        cardId,
+        commentId,
+      }),
+    );
+    setCardComments((prevComments) => [
+      ...prevComments.filter((comment) => comment.id !== commentId),
+    ]);
+  };
+
+  const editCommentHandler = (
+    cardId: string,
+    commentId: string,
+    text: string,
+  ) => {
+    dispatch(
+      editCardComments({
+        cardId,
+        commentId,
+        text,
+      }),
+    );
   };
 
   useEffect(() => {
@@ -88,26 +104,47 @@ export const Modal: React.FC<ModalProps> = ({
       document.removeEventListener('keydown', escapeHandler, false);
     };
   }, [escapeHandler]);
+
   return (
     <React.Fragment>
       <Backdrop />
       <ModalLayout>
         <ModalContainer>
-          <CloseButton onClick={onClose}>x</CloseButton>
+          <CloseButton
+            onClick={() => {
+              dispatch(toggleModal({ isShow: false }));
+              dispatch(closeModal());
+            }}>
+            x
+          </CloseButton>
           <ModalSection>
             <CardTitle
               type="text"
               id="cardTitle"
               value={cardTitle}
-              onChange={editCardTitleHandler}
-              onKeyUpCapture={keyUpHandler}
+              onChange={(e) => setCardTitle(e.target.value)}
+              onKeyUpCapture={() => {
+                dispatch(
+                  editCardTitle({
+                    id: card!.id,
+                    title: cardTitle,
+                  }),
+                );
+              }}
             />
             <CardInfo>
               <p>
                 in the column: {columnTitle ? columnTitle : '...without title'}
               </p>
               <p>Author: {card!.author}</p>
-              <button onClick={deleteCardHandler}>Delete Card</button>
+              <button
+                onClick={() => {
+                  dispatch(removeCard({ id: card!.id }));
+                  dispatch(toggleModal({ isShow: false }));
+                  dispatch(closeModal());
+                }}>
+                Delete Card
+              </button>
             </CardInfo>
           </ModalSection>
           <ModalSection>
@@ -119,29 +156,23 @@ export const Modal: React.FC<ModalProps> = ({
           </ModalSection>
           <ModalSection>
             <p>Comments:</p>
-            <CommentInput
-              type="text"
-              id="comment"
-              placeholder="Your comment..."
-              value={commentText}
-              onChange={setCommentTextHandler}
+            <CreateForm
+              onSubmit={createCommentHandler}
+              inputName={'comment'}
+              placeholder={'Enter comment...'}
+              btnName={'Add comment'}
             />
-            <CommentAddButton
-              onClick={addCommentHandler}
-              disabled={!commentText}>
-              Add Comment
-            </CommentAddButton>
           </ModalSection>
           <ModalSection>
-            {!card!.comments.length && <p>No comments yet...</p>}
-            {card!.comments.map((comment: IComment) => {
+            {!cardComments.length && <p>No comments yet...</p>}
+            {cardComments.map((comment: IComment) => {
               return (
                 <Comment
                   key={comment.id}
                   comment={comment}
-                  onEditComment={onEditComment!}
-                  onRemoveComment={onRemoveComment!}
                   cardId={card!.id}
+                  removeCommentHandler={removeCommentHandler}
+                  editCommentHandler={editCommentHandler}
                 />
               );
             })}

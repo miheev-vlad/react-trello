@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { IComment } from '../../../../../shared/interfaces/IComment';
 import {
   CommentAuthor,
@@ -9,37 +9,35 @@ import {
 } from './styles';
 
 type CommentProps = {
-  cardId: number;
+  cardId: string;
   comment: IComment;
-  onEditComment(cardId: number, commentId: number, text: string): void;
-  onRemoveComment(cardId: number, commentId: number): void;
+  removeCommentHandler(cardId: string, commentId: string): void;
+  editCommentHandler(cardId: string, commentId: string, text: string): void;
 };
 
 export const Comment: React.FC<CommentProps> = ({
   cardId,
   comment,
-  onRemoveComment,
-  onEditComment,
+  removeCommentHandler,
+  editCommentHandler,
 }) => {
-  const refInput = useRef<HTMLInputElement>(null);
-
-  const editCommentTextHandler = (id: number) => {
-    onEditComment(cardId, id, refInput.current!.value);
-  };
+  const [commentText, setCommentText] = useState<string>(comment.text);
 
   return (
     <CommentLayout>
       <CommentHeader>
         <CommentText
-          ref={refInput}
           type="text"
           id="commentText"
-          value={comment.text}
-          onChange={() => editCommentTextHandler(comment.id)}
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          onKeyUpCapture={() =>
+            editCommentHandler(cardId, comment.id, commentText)
+          }
         />
         <DeleteButton
           type="button"
-          onClick={() => onRemoveComment(cardId, comment.id)}>
+          onClick={() => removeCommentHandler(cardId, comment.id)}>
           x
         </DeleteButton>
       </CommentHeader>

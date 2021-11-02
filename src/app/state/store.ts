@@ -16,6 +16,10 @@ import columnsReducers from './ducks/column/index';
 import cardsReducers from './ducks/card/index';
 import { IColumnsState } from './ducks/column/columnSlice';
 import { ICardsState } from './ducks/card/cardSlice';
+import modalReducers from './ducks/modal/index';
+import { IModalState } from './ducks/modal/modalSlice';
+import userReducers from './ducks/user/index';
+import { IUserState } from './ducks/user/userSlice';
 
 const persistConfig = {
   key: 'root',
@@ -26,11 +30,15 @@ const persistConfig = {
 export interface IAppState {
   columns: IColumnsState;
   cards: ICardsState;
+  modal: IModalState;
+  user: IUserState;
 }
 
 const rootReducer = combineReducers<IAppState>({
   columns: columnsReducers,
   cards: cardsReducers,
+  modal: modalReducers,
+  user: userReducers,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);
