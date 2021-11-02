@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'react-final-form';
+import { InputContainer } from './styles';
 
 type InputProps = {
   inputName: string;
@@ -11,11 +12,13 @@ export const InputField: React.FC<InputProps> = ({
   placeholder,
 }) => {
   return (
-    <Field
-      name={inputName}
-      component="input"
-      type="text"
-      placeholder={placeholder}
-    />
+    <InputContainer>
+      <Field
+        name={inputName}
+        component="input"
+        type="text"
+        placeholder={placeholder}
+      />
+    </InputContainer>
   );
 };

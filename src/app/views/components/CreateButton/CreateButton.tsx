@@ -1,9 +1,10 @@
 import React from 'react';
+import { AddButton } from './styles';
 
 type ButtonProps = {
   btnName: string;
 };
 
 export const CreateButton: React.FC<ButtonProps> = ({ btnName }) => {
-  return <button type="submit">{btnName}</button>;
+  return <AddButton type="submit">{btnName}</AddButton>;
 };

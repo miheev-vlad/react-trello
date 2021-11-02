@@ -1,21 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch, connect, useSelector } from 'react-redux';
-import { StatusEnum } from '../../../shared/enums/StatusEnum';
-import { ICard } from '../../../shared/interfaces/ICard';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { IColumn } from '../../../shared/interfaces/IColumn';
 import { columnCardsSelector } from '../../../state/ducks/card';
-import { addCard, AddCardPayload } from '../../../state/ducks/card/cardSlice';
+import { addCard } from '../../../state/ducks/card/cardSlice';
 import { editColumn } from '../../../state/ducks/column/columnSlice';
-import { IAppState } from '../../../state/store';
 import { Card } from '../Card/Card';
-import { Modal } from '../Modal/Modal';
-import {
-  CardAddButton,
-  CardTitleInput,
-  ColumnCardContainer,
-  ColumnContainer,
-  TitleInput,
-} from './styles';
+import { ColumnCardContainer, ColumnContainer, TitleInput } from './styles';
 import { v4 as uuid } from 'uuid';
 import { CreateForm } from '../CreateForm/CreateForm';
 
@@ -27,7 +17,9 @@ type Props = OwnProps;
 
 export const Column: React.FC<Props> = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState<string>(column.title);
+  const cards = useSelector(columnCardsSelector(column.status));
   const dispatch = useDispatch();
+
   const editColumnTitleHandler = () => {
     dispatch(
       editColumn({
@@ -36,16 +28,6 @@ export const Column: React.FC<Props> = ({ column }) => {
       }),
     );
   };
-
-  const cards = useSelector(columnCardsSelector(column.status));
-
-  // const [showModal, setShowModal] = useState<boolean>(false);
-  // const [card, setCard] = useState<ICard>();
-  // const [columnTitle, setColumnTitle] = useState<string>(title);
-  // const [isAddBtnDisabled, setIsAddBtnDisabled] = useState<boolean>(true);
-  const ref = useRef<HTMLInputElement>(null);
-
-  const [cardTitle, setCardTitle] = useState<string>('');
 
   const createCardHandler = (title: string) => {
     dispatch(
@@ -58,47 +40,6 @@ export const Column: React.FC<Props> = ({ column }) => {
       }),
     );
   };
-
-  // const keyPressHandler = (event: React.KeyboardEvent) => {
-  //   if (event.key === 'Enter') {
-  //     onAdd!(ref.current!.value, status);
-  //     ref.current!.value = '';
-  //     setIsAddBtnDisabled(true);
-  //   }
-  // };
-
-  // const disabledBtnHandler = () => {
-  //   if (ref.current!.value.trim() !== '') {
-  //     setIsAddBtnDisabled(false);
-  //   } else {
-  //     setIsAddBtnDisabled(true);
-  //   }
-  // };
-
-  // const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setColumnTitle(event.target.value);
-  // };
-
-  // const keyUpHandler = () => {
-  //   onEdit!(id, columnTitle);
-  // };
-
-  // const clickHandler = () => {
-  //   if (ref.current!.value.trim() !== '') {
-  //     onAdd!(ref.current!.value, status);
-  //     ref.current!.value = '';
-  //     setIsAddBtnDisabled(true);
-  //   }
-  // };
-
-  // const closeModalHandler = () => {
-  //   setShowModal(false);
-  // };
-
-  // const showModalHandler = (card: ICard) => {
-  //   setShowModal(true);
-  //   setCard(card);
-  // };
 
   return (
     <React.Fragment>
@@ -120,23 +61,10 @@ export const Column: React.FC<Props> = ({ column }) => {
         />
         <ColumnCardContainer>
           {cards.map((card) => {
-            return <Card key={card.id} card={card} />;
+            return <Card key={card.id} card={card} columnTitle={columnTitle} />;
           })}
         </ColumnCardContainer>
       </ColumnContainer>
-      {/* {showModal && (
-        <Modal
-          columnTitle={columnTitle}
-          onClose={closeModalHandler}
-          card={card}
-          onRemove={onRemove!}
-          onAddComment={onAddComment!}
-          onRemoveComment={onRemoveComment!}
-          onAddDescription={onAddDescription!}
-          onEditCadTitle={onEditCadTitle!}
-          onEditComment={onEditComment!}
-        />
-      )} */}
     </React.Fragment>
   );
 };
