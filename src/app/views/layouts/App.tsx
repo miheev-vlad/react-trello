@@ -1,37 +1,21 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import _ from 'lodash';
 
 import { AppTitle, AppWrapper, Container } from './AppStyles';
 import { Modal } from '../components/Modal/Modal';
 import { Column } from '../components/Сolumn/Column';
-import { createUser } from '../../state/ducks/user/userSlice';
 import { IAppState, RootState } from '../../state/store';
+import { Popup } from '../components/Popup/Popup';
 
 const App: React.FC = () => {
   const columns = useSelector((state: RootState) => state.columns.value);
   const isShow = useSelector((state: RootState) => state.modal.isShow);
   const userName = useSelector((state: IAppState) => state.user.userName);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    let isUserName = false;
-    if (!isUserName && !userName) {
-      do {
-        const result = window.prompt('Please enter your name');
-        if (result && result !== '') {
-          dispatch(
-            createUser({
-              userName: result,
-            }),
-          );
-          isUserName = true;
-        } else {
-          window.alert('Your name is required');
-        }
-      } while (!isUserName);
-    }
-  }, [userName, dispatch]);
+  if (!userName) {
+    return <Popup />;
+  }
 
   return (
     <AppWrapper>
