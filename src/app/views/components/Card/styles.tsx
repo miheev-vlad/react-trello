@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const CardLayout = styled.div`
   display: flex;
-  flex-wrap: no-wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   border: 1px grey solid;
   border-radius: 10px;
