@@ -61,3 +61,9 @@ export const CardInfo = styled.section`
     }
   }
 `;
+
+export const CardDescriptionTextarea = styled.textarea`
+  resize: none;
+  width: 100%;
+  height: 50px;
+`;

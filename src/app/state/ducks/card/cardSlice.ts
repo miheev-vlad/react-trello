@@ -14,6 +14,7 @@ export interface AddCardPayload {
   status: StatusEnum;
   author: string;
   comments: IComment[];
+  description: string;
 }
 
 export interface AddCardCommentPayload {
@@ -65,6 +66,7 @@ export const cardSlice = createSlice({
         status: action.payload.status,
         author: action.payload.author,
         comments: action.payload.comments,
+        description: action.payload.description,
       });
     },
     removeCard: (state, action: PayloadAction<RemoveCardPayload>) => {

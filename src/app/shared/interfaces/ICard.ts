@@ -7,5 +7,5 @@ export interface ICard {
   id: string;
   comments: IComment[];
   status: StatusEnum;
-  description?: string;
+  description: string;
 }

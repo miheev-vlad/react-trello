@@ -39,6 +39,7 @@ export const Column: React.FC<ColumnProps> = ({ column }) => {
         status: column.status,
         author: userName,
         comments: [],
+        description: '',
       }),
     );
   };
