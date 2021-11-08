@@ -12,13 +12,11 @@ import { addCard } from '../../../state/ducks/card/cardSlice';
 import { editColumn } from '../../../state/ducks/column/columnSlice';
 import { IAppState } from '../../../state/store';
 
-interface OwnProps {
+type ColumnProps = {
   column: IColumn;
-}
+};
 
-type Props = OwnProps;
-
-export const Column: React.FC<Props> = ({ column }) => {
+export const Column: React.FC<ColumnProps> = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState<string>(column.title);
   const cards = useSelector(columnCardsSelector(column.status));
   const userName = useSelector((state: IAppState) => state.user.userName);
