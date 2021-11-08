@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { Backdrop } from './components/Backdrop/Backdrop';
 import { Comment } from './components/Comment/Comment';
 import {
+  CardDescriptionTextarea,
   CardInfo,
   CardTitle,
   CloseButton,
@@ -31,6 +32,9 @@ export const Modal: React.FC = () => {
   const card = useSelector((state: IAppState) => state.modal.card);
   const refTextArea = useRef<HTMLTextAreaElement>(null);
   const [cardTitle, setCardTitle] = useState<string>(card ? card.title : '');
+  const [cardDescription, setCardDescription] = useState<string>(
+    card ? card.description : '',
+  );
   const userName = useSelector((state: IAppState) => state.user.userName);
 
   const columnTitle = useSelector(
@@ -50,15 +54,6 @@ export const Modal: React.FC = () => {
     },
     [dispatch],
   );
-
-  const addCardDescriptionHandler = () => {
-    dispatch(
-      editCardDescription({
-        id: card!.id,
-        description: refTextArea.current!.value,
-      }),
-    );
-  };
 
   const createCommentHandler = (comment: string) => {
     const newComment: IComment = {
@@ -152,10 +147,18 @@ export const Modal: React.FC = () => {
           </ModalSection>
           <ModalSection>
             <p>Description:</p>
-            <textarea
+            <CardDescriptionTextarea
               ref={refTextArea}
-              value={card!.description}
-              onChange={addCardDescriptionHandler}></textarea>
+              value={cardDescription}
+              onChange={(e) => setCardDescription(e.target.value)}
+              onKeyUpCapture={() => {
+                dispatch(
+                  editCardDescription({
+                    id: card!.id,
+                    description: refTextArea.current!.value,
+                  }),
+                );
+              }}></CardDescriptionTextarea>
           </ModalSection>
           <ModalSection>
             <p>Comments:</p>
