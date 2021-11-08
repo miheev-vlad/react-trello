@@ -28,10 +28,9 @@ export const CreateForm: React.FC<CreateCardFormProps> = ({
           <form id="exampleForm" onSubmit={handleSubmit}>
             <FormComponentsWrapp>
               <InputField inputName={inputName} placeholder={placeholder} />
-              <CreateButton
-                btnName={btnName}
-                disabled={submitting || pristine || invalid}
-              />
+              <CreateButton disabled={submitting || pristine || invalid}>
+                {btnName}
+              </CreateButton>
             </FormComponentsWrapp>
           </form>
         );
