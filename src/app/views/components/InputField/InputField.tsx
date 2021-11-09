@@ -1,11 +1,11 @@
 import React from 'react';
-import { Field } from 'react-final-form';
+import { Field, FieldRenderProps } from 'react-final-form';
 import { InputContainer } from './styles';
 
-type InputProps = {
+interface IInputField {
   inputName: string;
   placeholder: string;
-};
+}
 
 const required = (value: string) => {
   if (!value || !value.trim()) {
@@ -15,7 +15,13 @@ const required = (value: string) => {
   return undefined;
 };
 
-export const InputField: React.FC<InputProps> = ({
+const RenderInputComponent = (
+  props: FieldRenderProps<string, HTMLInputElement>,
+) => {
+  return <input {...props.input} />;
+};
+
+export const InputField: React.FC<IInputField> = ({
   inputName,
   placeholder,
 }) => {
@@ -23,7 +29,7 @@ export const InputField: React.FC<InputProps> = ({
     <InputContainer>
       <Field
         name={inputName}
-        component="input"
+        component={RenderInputComponent}
         type="text"
         placeholder={placeholder}
         validate={required}
