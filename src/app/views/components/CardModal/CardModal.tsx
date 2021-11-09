@@ -3,16 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import _ from 'lodash';
 
-import { Backdrop } from './components/Backdrop/Backdrop';
 import { Comment } from './components/Comment/Comment';
 import {
   CardDescriptionTextarea,
   CardInfo,
   CardTitle,
-  CloseButton,
-  ModalContainer,
-  ModalLayout,
-  ModalSection,
+  CardSection,
 } from './styles';
 import { CreateForm } from '../CreateForm/CreateForm';
 import { IComment } from '../../../shared/interfaces/IComment';
@@ -26,8 +22,9 @@ import {
 } from '../../../state/ducks/card/cardSlice';
 import { closeModal, toggleModal } from '../../../state/ducks/modal/modalSlice';
 import { IAppState } from '../../../state/store';
+import { ModalWindowWrapper } from '../ModalWindowWrapper/ModalWindowWrapper';
 
-export const Modal: React.FC = () => {
+export const CardModal: React.FC = () => {
   const dispatch = useDispatch();
   const card = useSelector((state: IAppState) => state.modal.card);
   const refTextArea = useRef<HTMLTextAreaElement>(null);
@@ -104,87 +101,73 @@ export const Modal: React.FC = () => {
   }, [escapeHandler]);
 
   return (
-    <React.Fragment>
-      <Backdrop />
-      <ModalLayout>
-        <ModalContainer>
-          <CloseButton
+    <ModalWindowWrapper>
+      <CardSection>
+        <CardTitle
+          type="text"
+          id="cardTitle"
+          value={cardTitle}
+          onChange={(e) => setCardTitle(e.target.value)}
+          onKeyUpCapture={() => {
+            dispatch(
+              editCardTitle({
+                id: card!.id,
+                title: cardTitle,
+              }),
+            );
+          }}
+        />
+        <CardInfo>
+          <p>in the column: {columnTitle ? columnTitle : '...without title'}</p>
+          <p>Author: {card!.author}</p>
+          <button
             onClick={() => {
+              dispatch(removeCard({ id: card!.id }));
               dispatch(toggleModal({ isShow: false }));
               dispatch(closeModal());
             }}>
-            x
-          </CloseButton>
-          <ModalSection>
-            <CardTitle
-              type="text"
-              id="cardTitle"
-              value={cardTitle}
-              onChange={(e) => setCardTitle(e.target.value)}
-              onKeyUpCapture={() => {
-                dispatch(
-                  editCardTitle({
-                    id: card!.id,
-                    title: cardTitle,
-                  }),
-                );
-              }}
+            Delete Card
+          </button>
+        </CardInfo>
+      </CardSection>
+      <CardSection>
+        <p>Description:</p>
+        <CardDescriptionTextarea
+          ref={refTextArea}
+          value={cardDescription}
+          onChange={(e) => setCardDescription(e.target.value)}
+          onKeyUpCapture={() => {
+            dispatch(
+              editCardDescription({
+                id: card!.id,
+                description: refTextArea.current!.value,
+              }),
+            );
+          }}></CardDescriptionTextarea>
+      </CardSection>
+      <CardSection>
+        <p>Comments:</p>
+        <CreateForm
+          onSubmit={createCommentHandler}
+          inputName={'comment'}
+          placeholder={'Enter comment...'}
+          btnName={'Add comment'}
+        />
+      </CardSection>
+      <CardSection>
+        {!cardComments.length && <p>No comments yet...</p>}
+        {_.map(cardComments, (comment: IComment) => {
+          return (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              cardId={card!.id}
+              removeCommentHandler={removeCommentHandler}
+              editCommentHandler={editCommentHandler}
             />
-            <CardInfo>
-              <p>
-                in the column: {columnTitle ? columnTitle : '...without title'}
-              </p>
-              <p>Author: {card!.author}</p>
-              <button
-                onClick={() => {
-                  dispatch(removeCard({ id: card!.id }));
-                  dispatch(toggleModal({ isShow: false }));
-                  dispatch(closeModal());
-                }}>
-                Delete Card
-              </button>
-            </CardInfo>
-          </ModalSection>
-          <ModalSection>
-            <p>Description:</p>
-            <CardDescriptionTextarea
-              ref={refTextArea}
-              value={cardDescription}
-              onChange={(e) => setCardDescription(e.target.value)}
-              onKeyUpCapture={() => {
-                dispatch(
-                  editCardDescription({
-                    id: card!.id,
-                    description: refTextArea.current!.value,
-                  }),
-                );
-              }}></CardDescriptionTextarea>
-          </ModalSection>
-          <ModalSection>
-            <p>Comments:</p>
-            <CreateForm
-              onSubmit={createCommentHandler}
-              inputName={'comment'}
-              placeholder={'Enter comment...'}
-              btnName={'Add comment'}
-            />
-          </ModalSection>
-          <ModalSection>
-            {!cardComments.length && <p>No comments yet...</p>}
-            {_.map(cardComments, (comment: IComment) => {
-              return (
-                <Comment
-                  key={comment.id}
-                  comment={comment}
-                  cardId={card!.id}
-                  removeCommentHandler={removeCommentHandler}
-                  editCommentHandler={editCommentHandler}
-                />
-              );
-            })}
-          </ModalSection>
-        </ModalContainer>
-      </ModalLayout>
-    </React.Fragment>
+          );
+        })}
+      </CardSection>
+    </ModalWindowWrapper>
   );
 };

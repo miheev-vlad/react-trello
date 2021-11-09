@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import _ from 'lodash';
 
 import { MainTitle, MainWrapper, MainContainer } from './styles';
-import { Modal } from '../components/Modal/Modal';
 import { Column } from '../components/Сolumn/Column';
 import { IAppState, RootState } from '../../state/store';
 import { Popup } from '../components/Popup/Popup';
+import { CardModal } from '../components/CardModal/CardModal';
 
 export const MainLayout: React.FC = () => {
   const columns = useSelector((state: RootState) => state.columns.value);
@@ -27,7 +27,7 @@ export const MainLayout: React.FC = () => {
           return <Column column={column} key={column.id} />;
         })}
       </MainContainer>
-      {isShow && <Modal />}
+      {isShow && <CardModal />}
     </MainWrapper>
   );
 };
