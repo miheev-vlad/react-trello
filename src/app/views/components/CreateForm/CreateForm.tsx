@@ -11,6 +11,10 @@ type CreateCardFormProps = {
   btnName: string;
 };
 
+interface IValues {
+  inputStr: string;
+}
+
 export const CreateForm: React.FC<CreateCardFormProps> = ({
   onSubmit,
   inputName,
@@ -19,7 +23,7 @@ export const CreateForm: React.FC<CreateCardFormProps> = ({
 }) => {
   return (
     <Form
-      onSubmit={(values: { [key: string]: string }, form) => {
+      onSubmit={(values: IValues, form) => {
         onSubmit(Object.values(values));
         form.reset();
       }}
