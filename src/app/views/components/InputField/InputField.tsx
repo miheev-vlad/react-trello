@@ -8,11 +8,7 @@ type InputProps = {
 };
 
 const required = (value: string) => {
-  if (!value) {
-    return true;
-  }
-
-  if (!value.trim()) {
+  if (!value || !value.trim()) {
     return true;
   }
 
