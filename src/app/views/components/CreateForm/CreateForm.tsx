@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { CreateButton } from '../CreateButton/CreateButton';
 import { InputField } from '../InputField/InputField';
 import { FormComponentsWrapp } from './styles';
@@ -15,9 +15,16 @@ interface IValues {
   inputStr: string;
 }
 
+const required = (value: string) => {
+  if (!value || !value.trim()) {
+    return true;
+  }
+
+  return undefined;
+};
+
 export const CreateForm: React.FC<CreateCardFormProps> = ({
   onSubmit,
-  inputName,
   placeholder,
   btnName,
 }) => {
@@ -31,7 +38,12 @@ export const CreateForm: React.FC<CreateCardFormProps> = ({
         return (
           <form id="exampleForm" onSubmit={handleSubmit}>
             <FormComponentsWrapp>
-              <InputField inputName={inputName} placeholder={placeholder} />
+              <Field<string>
+                name="inputStr"
+                component={InputField}
+                placeholder={placeholder}
+                validate={required}
+              />
               <CreateButton disabled={submitting || pristine || invalid}>
                 {btnName}
               </CreateButton>
