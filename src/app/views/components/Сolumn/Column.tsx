@@ -58,7 +58,6 @@ export const Column: React.FC<ColumnProps> = ({ column }) => {
         <br />
         <CreateForm
           onSubmit={createCardHandler}
-          inputName={'title'}
           placeholder={'Enter card title...'}
           btnName={'Add card'}
         />
