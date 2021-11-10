@@ -149,7 +149,6 @@ export const CardModal: React.FC = () => {
         <p>Comments:</p>
         <CreateForm
           onSubmit={createCommentHandler}
-          inputName={'comment'}
           placeholder={'Enter comment...'}
           btnName={'Add comment'}
         />

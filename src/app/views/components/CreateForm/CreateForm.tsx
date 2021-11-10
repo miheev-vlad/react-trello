@@ -4,9 +4,8 @@ import { CreateButton } from '../CreateButton/CreateButton';
 import { InputField } from '../InputField/InputField';
 import { FormComponentsWrapp } from './styles';
 
-type CreateCardFormProps = {
+type CreateFormProps = {
   onSubmit(value: unknown): void;
-  inputName: string;
   placeholder: string;
   btnName: string;
 };
@@ -23,7 +22,7 @@ const required = (value: string) => {
   return undefined;
 };
 
-export const CreateForm: React.FC<CreateCardFormProps> = ({
+export const CreateForm: React.FC<CreateFormProps> = ({
   onSubmit,
   placeholder,
   btnName,

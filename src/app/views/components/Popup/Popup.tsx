@@ -25,7 +25,6 @@ export const Popup: React.FC = () => {
         <Message>Please enter your name:</Message>
         <CreateForm
           onSubmit={setUserHandler}
-          inputName={'userName'}
           placeholder={'your name...'}
           btnName={'Save'}
         />
